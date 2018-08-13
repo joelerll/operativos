@@ -43,22 +43,17 @@ int main(int argc, char *argv[]) {
     printf("El archivo no existe\n");
   } else {
     int nread;
-    while((nread = fread(buffInfo,1,sizeof(buffInfo),fp))>0){
+    while((nread = fread(buffInfo,1,sizeof(buffInfo),fp)) > 0) {
       write(sockfd,buffInfo,nread);
       bzero(buffInfo,sizeof(buffInfo));
       if (feof(fp)){
+        write(sockfd,"",0);
         fclose(fp);
-        // printf("Finalizao\n");
-        // write(sockfd,"",0);
-        // read(sockfd, buffInfo, sizeof(buffInfo));
-        // printf("%s\n", buffInfo);
       }
     }
-    // unsigned char recvBuff[8000000];
-    // printf("Antes finalizar\n");
-    // int bytesReceived = read(sockfd, recvBuff, sizeof(recvBuff));
-    // printf("%d\n", bytesReceived);
-    // printf("%s\n", recvBuff);
+    unsigned char recvBuff[80000];
+    read(sockfd, recvBuff, sizeof(recvBuff));
+    printf("La respuesta es: %s\n", recvBuff);
     close(sockfd);
   }
   return 0;

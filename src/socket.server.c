@@ -110,7 +110,6 @@ void procesarArchivo(int newsockfd) {
   // snprintf (userId, MAXANSWERSIZE, userFormato, ".data", year, mon, day, hora, minuto, sec, random_number(1,8000));
   int userId = random_number(1,8000000);
   char *nombreArchivo = malloc (MAXANSWERSIZE);
-  // sprintf(nombreArchivo, "%d", userId);
   snprintf(nombreArchivo, MAXANSWERSIZE, formato, ".data", userId);
   FILE *fp = fopen(nombreArchivo,"w");
   if (fp == NULL) {
@@ -118,16 +117,27 @@ void procesarArchivo(int newsockfd) {
   } else {
     int bytesReceived = 0;
     bytesReceived = read(newsockfd, recvBuff, sizeof(recvBuff));
-    while(bytesReceived > 0) {
-      fwrite(recvBuff, 1,bytesReceived,fp);
-      bzero(recvBuff,sizeof(recvBuff));
-      bytesReceived = read(newsockfd, recvBuff, sizeof(recvBuff));
-      if(bytesReceived == 0) {
-        // write(newsockfd,"final",sizeof("final"));
-        fclose(fp);
-      }
-    }
-    write(newsockfd,"final",sizeof("final"));
+
+    fwrite(recvBuff, 1,bytesReceived,fp);
+    fclose(fp);
+
+    // codigo para archivos grandes, me da error de que el cliente se queda esperando
+    // printf("iniciado: %d\n", bytesReceived);
+    // while(bytesReceived > 0) {
+    //   printf("While\n");
+    //   fwrite(recvBuff, 1,bytesReceived,fp);
+    //   printf("fwrite\n");
+    //   bzero(recvBuff,sizeof(recvBuff));
+    //   printf("bzero\n");
+    //   bytesReceived = read(newsockfd, recvBuff, sizeof(recvBuff));
+    //   printf("read\n");
+    //   printf("termiando: %d\n", bytesReceived);
+    //   if(bytesReceived == 0) {
+    //     printf("bytesReceived\n");
+    //     fclose(fp);
+    //   }
+    // }
+    
     int link[2];
     pid_t pid;
     if (pipe(link) == -1) {
@@ -154,7 +164,8 @@ void procesarArchivo(int newsockfd) {
       close(link[1]);
       int nbytes = read(link[0], error, sizeof(error));
       if (nbytes > 0) { // si ocurrio un error
-        printf("ERROR: %s", error);
+        // printf("ERROR: %s", error);
+        write(newsockfd, error, sizeof(error));
       } else {
         // si compilo correctamente lo ejecutara y obtendra el resuldato del stdout
         int link[2];
@@ -181,13 +192,14 @@ void procesarArchivo(int newsockfd) {
         } else {
           close(link[1]);
           read(link[0], resultado, sizeof(resultado));
-          printf("%s\n", resultado);
-          write(newsockfd,"hgello",sizeof("hgello"));
-          close(newsockfd);
+          // printf("Resultado: %s\n", resultado);
+          // write(newsockfd, "resultado", sizeof("resultado"));
+          write(newsockfd, resultado, sizeof(resultado));
         }
         wait(NULL);
       }
       close(link[0]);
     }
+    close(newsockfd);
   }
 }
