@@ -16,12 +16,17 @@ server: src/socket.server.c obj/tabla.o
 	gcc -Wall -Iinclude/ -pthread src/socket.server.c obj/tabla.o -o bin/server
 	./bin/server
 
+server.t: src/socket.server.threads.c
+	gcc -Wall -Iinclude/ -pthread src/socket.server.threads.c -o bin/server
+	./bin/server
+
 client: src/socket.client.c
 	gcc  -Wall -Wextra src/socket.client.c -o bin/client -pthread
 	./bin/client test/dump/hello.c
 
 prueba: src/prueba.c tabla.o
 	gcc  -pthread -Iinclude/ obj/tabla.o src/prueba.c  -o prueba
+	./prueba
 
 utils.test: src/utils.c utils.o
 	@gcc  -pthread -Iinclude/ obj/utils.o test/utils.test.c  -o bin/utils.test

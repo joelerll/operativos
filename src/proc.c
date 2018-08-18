@@ -40,6 +40,8 @@ ProcFile **proc_listaProcesos (char *archivo) {
   char * line = NULL;
   size_t len = 0;
   int CPUs = sysconf(_SC_NPROCESSORS_ONLN);
+  // np = sysconf(_SC_NPROCESSORS_CONF);     /* processors configured */
+  // np = sysconf(_SC_NPROCESSORS_ONLN);     /* processors available */
   for (size_t i = 0; i < CPUs; i++) {
     ssize_t read = getline(&line, &len, fp);
     if (read != -1) {
@@ -47,6 +49,7 @@ ProcFile **proc_listaProcesos (char *archivo) {
       procesos[i] = proc_crear(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8], s[9], s[10]);
     }
   }
+  fclose(fp);
   return procesos;
 }
 

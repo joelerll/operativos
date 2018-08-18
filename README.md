@@ -40,21 +40,21 @@ make
 El proyecto se va a basar sobre el proyecto desarrollado en el primer parcial. Ahora el sistema va a contener un nuevo (s) módulo(s) que permitan realizar las siguientes acciones de forma concurrente con la ejecución de los programas de los usuarios.
 
 // BACKGROUND
-M2) Al crear procesos asignarlos (affinidad) a los CPUs menos ocupados
+M2) Al crear procesos asignarlos (affinidad) a los CPUs menos ocupados [x]
 M3) Detectar procesos que superen el tiempo de ejecucion Te
 M4) Detectar la ocurrencia de major/minor page faults en el sistema
 
 // MONITORING
-M1) Monitorear continuamente la carga de los CPU(s)
-M5) proveer estadisticas acerca de los procesos involucrados
-M6) Generar estadisticas de  procesos en ejecucion y de el sistema
+M1) Monitorear continuamente la carga de los CPU(s) [x]
+M5) proveer estadisticas acerca de los procesos involucrados [x]
+M6) Generar estadisticas de  procesos en ejecucion y de el sistema [x]
   * uso de memoria
   * disco
   * cpu
   * tazas de procesos en ejecucion y terminados por minuto en un archivo log
 
 // DEL FRONT
-M7) Permitir seleccionar pausar, terminar procesos
+M7) Permitir seleccionar pausar, terminar procesos ?
 ```
 
 ## Links utiles

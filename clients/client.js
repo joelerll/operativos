@@ -6,13 +6,13 @@ const client = new net.Socket()
 // Conectar el socket
 client.connect(PORT, HOST, function() {
     console.log('CONNECTED TO: ' + HOST + ':' + PORT)
-    client.write(`
-      #include <stdio.h>
-      int main () {
-        printf("Hola");
-        return 0;
-      }
-    `)
+    // client.write(`
+    //   #include <stdio.h>
+    //   int main () {
+    //     printf("Hola");
+    //     return 0;
+    //   }
+    // `)
 })
 
 // recibir el mensaje del server
