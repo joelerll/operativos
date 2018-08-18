@@ -137,7 +137,7 @@ void procesarArchivo(int newsockfd) {
     //     fclose(fp);
     //   }
     // }
-    
+
     int link[2];
     pid_t pid;
     if (pipe(link) == -1) {
@@ -164,7 +164,6 @@ void procesarArchivo(int newsockfd) {
       close(link[1]);
       int nbytes = read(link[0], error, sizeof(error));
       if (nbytes > 0) { // si ocurrio un error
-        // printf("ERROR: %s", error);
         write(newsockfd, error, sizeof(error));
       } else {
         // si compilo correctamente lo ejecutara y obtendra el resuldato del stdout
@@ -174,7 +173,6 @@ void procesarArchivo(int newsockfd) {
           perror("Error al crear pipe: ");
           exit(1);
         }
-
         pid_t pid2 = fork();
         if (pid2 == -1) {
           perror("Error al crear proceso: ");
