@@ -11,7 +11,7 @@
 #include <sys/resource.h>
 #include <stdio.h>
 #include <setjmp.h>
-
+#include <fcntl.h>
 #define TRY do{ jmp_buf ex_buf__; if( !setjmp(ex_buf__) ){
 #define CATCH } else {
 #define ETRY } }while(0)
@@ -71,18 +71,44 @@ int main(void) {
   // test/dump/hello.c
   // FILE *ls = popen("ls -mesf 2>./.data/errFile", "r");
 
-  // FILE *ls = popen("gcc -Wall test/dump/helloError.c -o .data/prueba", "r"); //  2>./.data/errors/errFileA
-  // // FILE *ls = freopen("ls","r",stdout);
-  // if (ls == NULL) {
-  //   printf("Ocurrio un error\n");
-  // }
+  // 1. Recibir el archivo en string y guardarlo
+  // 2. Compliar el archivo y ver si dar error
+  // 2.5 Si da error, retornar el error y decir que hubo error
+  // 3. Si no hubo error, ejecutar el archivo
+  // 4. Enviar lo que se ejecuto el archivo y decir que se ejecuto
+  int fp = open("archivo.txt",  O_WRONLY | O_APPEND | O_CREAT,  0777);
+  if (fp < 0) {
+    printf("Error al crear el archivo\n");
+    perror("Error");
+  }
+  write(fp, "Hola, como esta", strlen("Hola, como esta"));
+  // FILE *ls = popen("gcc test/dump/hello.c -o .data/prueba 2>&1", "r"); //  2>./.data/errors/errFileA
+  // // si esto de devuelve no vacio (quiere decir que hay error)
+  // // FILE *ls = popen("ls","r");
+  // // if (ls == NULL) {
+  // //   printf("Ocurrio un error\n");
+  // // }
+  // // if (ls) {
+  // //   printf("Erorr\n");
+  // // }
   // char buf[256];
+  // int exiteError = 0;
   // while (fgets(buf, sizeof(buf), ls) != 0) {
-  //   printf("%s\n", buf);
+  //   // printf("%s\n", buf);
+  //   exiteError = 1;
+  // }
+  // if (exiteError) {
+  //   printf("Existe error\n");
+  // } else {
+  //   FILE *ls = popen("./.data/prueba 2>&1", "r");
+  //   // como captar el exit status al ejecutar el archivo?
+  //   while (fgets(buf, sizeof(buf), ls) != 0) {
+  //     printf("%s\n", buf);
+  //   }
   // }
   // pclose(ls);
-  int CPUs = sysconf(_SC_NPROCESSORS_ONLN);
-  printf("%d\n", CPUs);
+  // int CPUs = sysconf(_SC_NPROCESSORS_ONLN);
+  // printf("%d\n", CPUs);
   // struct rusage usage;
   // for (int i = 0; i < 700; i++) {
   //   /* Double loop for more interesting results. */

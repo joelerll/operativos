@@ -1,3 +1,5 @@
+.PHONY: clean
+
 all: client server
 
 main:
@@ -18,7 +20,7 @@ server: src/socket.server.c obj/tabla.o
 
 server.t: src/socket.server.threads.c proc.o utils.o
 	gcc -Wall -Iinclude/ -pthread obj/utils.o obj/proc.o src/socket.server.threads.c -o bin/server
-	./bin/server
+	@./bin/server
 
 client: src/socket.client.c
 	gcc  -Wall -Wextra src/socket.client.c -o bin/client -pthread
@@ -35,5 +37,8 @@ utils.test: src/utils.c utils.o
 proc.test: src/proc.c proc.o utils.o
 	@gcc  -pthread -Iinclude/ obj/utils.o obj/proc.o test/proc.test.c  -o bin/proc.test
 	@./bin/proc.test
+
+clean:
+	rm .data/* prueba obj/*.o
 
 test: utils.test proc.test

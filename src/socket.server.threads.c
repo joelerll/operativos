@@ -10,26 +10,37 @@
 #include <signal.h>
 #include <pthread.h>
 #include <sched.h>
+#include <syscall.h>
+#include <fcntl.h>
 #include "proc.h"
+#include "utils.h"
+
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
+#define NUMERO_HILOS_MAXIMO system("/proc/sys/kernel/threads-max")
+#define MAXANSWERSIZE 10
+
+const char *archivoFormato = "%s/%d.c";
+const char *compilar = "gcc .data/%d.c -o .data/%d.out 2>&1";
+const char *ejecutar = "./.data/%d.out";
+pthread_mutex_t lock;
 
 void error(char *msg) { perror(msg); exit(-1); }
 void *hiloProcesar(void *arg);
 void matarServidor(int senal) {
   pid_t pmaster = getpid();
   printf(ANSI_COLOR_RED "Se ha detenido el servidor %d" ANSI_COLOR_RESET "\n", pmaster);
-  // KILL ALL CHILDRENS
-  // pthread_cleanup_push(NULL, NULL);
-  // pthread_cancel(NULL);
   pthread_exit(NULL);
   close(pmaster);
 }
 
 int main() {
+  srand(time(NULL));// porque se usa random
   int sockfd, client_socket;
+  int option = 1;
   struct sockaddr_in serv_addr;
   sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
   if (sockfd < 0) {
     error("ERROR al iniciar el socket");
   }
@@ -63,7 +74,12 @@ int main() {
   return 0;
 }
 
+// pthread_mutex_lock(&lock);
+// pthread_mutex_unlock(&lock);
 void *hiloProcesar(void *arg) {
+  // asignacion al procesador
+  int *param = (int *)arg;
+  int sock = param[0];
   int procesador = proc_obtenerProcesosMenosUsado(NULL);
   cpu_set_t my_set;
   CPU_ZERO(&my_set);
@@ -71,16 +87,50 @@ void *hiloProcesar(void *arg) {
   sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
   int cpu = sched_getcpu();
   printf("Asignado el procesador: %d\n", cpu);
-  int *param = (int *)arg;
-  int sock = param[0];
-  int n = 900;
-  for(int i=1; i<=n; ++i) {
-    for(int i=1; i<=n; ++i) {
-      for(int i=1; i<=n; ++i) {
-      }
-    }
+
+  // generar archivo
+  int userId = u_random_number(1,8000000);
+  char nombreArchivo[20];
+  memset(nombreArchivo, 0, sizeof(nombreArchivo));
+  snprintf(nombreArchivo, sizeof(nombreArchivo), archivoFormato, ".data", userId);
+  printf("%s\n", nombreArchivo);
+  int fp = open(nombreArchivo, O_WRONLY | O_APPEND | O_CREAT, 0777);
+
+  if (fp < 0) {
+    printf("Error al crear el archivo\n");
+    perror("Error");
   }
-  write(sock,"a",1);
+  unsigned char recvBuff[8000000];
+  int bytesReceived = 0;
+  bytesReceived = read(sock, recvBuff, sizeof(recvBuff));
+  write(fp, recvBuff, bytesReceived);
+  close(fp);
+
+  // compilar
+  char rutaCompilado[50];
+  char rutaEjecutar[50];
+  char respuesta[900];
+  char buf[10];
+  snprintf(rutaCompilado, sizeof(rutaCompilado), compilar, userId, userId);
+  FILE *fp_compilar = popen(rutaCompilado, "r");
+  int exiteError = 0;
+  while (fgets(buf, sizeof(buf), fp_compilar) != 0) { // esperar a que termine de compilar
+    strcat(respuesta, buf);
+    exiteError = 1;
+  }
+  fclose(fp_compilar);
+  if (exiteError) {
+    write(sock,respuesta,strlen(respuesta));
+  } else {
+    memset(rutaEjecutar, 0, sizeof(rutaEjecutar));
+    snprintf(rutaEjecutar, sizeof(rutaEjecutar), ejecutar, userId);
+    FILE *fp_ejecutar = popen(rutaEjecutar, "r");
+    while (fgets(buf, sizeof(buf), fp_ejecutar) != 0) {
+      strcat(respuesta, buf);
+    }
+    fclose(fp_ejecutar);
+    write(sock,respuesta,strlen(respuesta));
+  }
   close(sock);
   return NULL;
 }
