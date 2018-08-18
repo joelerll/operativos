@@ -1,11 +1,14 @@
 #define _GNU_SOURCE
+#define _BSD_SOURCE         /* See feature_test_macros(7) */
+     #include <stdlib.h>
 #include<stdio.h>
 #include<string.h>
 #include<pthread.h>
 #include<stdlib.h>
 #include<unistd.h>
 #include <sched.h>
-
+#include <sys/time.h>
+#include <sys/resource.h>
 #include <stdio.h>
 #include <setjmp.h>
 
@@ -68,17 +71,69 @@ int main(void) {
   // test/dump/hello.c
   // FILE *ls = popen("ls -mesf 2>./.data/errFile", "r");
 
-  FILE *ls = popen("gcc -Wall test/dump/helloError.c -o .data/prueba", "r"); //  2>./.data/errors/errFileA
-  // FILE *ls = freopen("ls","r",stdout);
-  if (ls == NULL) {
-    printf("Ocurrio un error\n");
-  }
-  char buf[256];
-  while (fgets(buf, sizeof(buf), ls) != 0) {
-    printf("%s\n", buf);
-  }
-  pclose(ls);
-
+  // FILE *ls = popen("gcc -Wall test/dump/helloError.c -o .data/prueba", "r"); //  2>./.data/errors/errFileA
+  // // FILE *ls = freopen("ls","r",stdout);
+  // if (ls == NULL) {
+  //   printf("Ocurrio un error\n");
+  // }
+  // char buf[256];
+  // while (fgets(buf, sizeof(buf), ls) != 0) {
+  //   printf("%s\n", buf);
+  // }
+  // pclose(ls);
+  int CPUs = sysconf(_SC_NPROCESSORS_ONLN);
+  printf("%d\n", CPUs);
+  // struct rusage usage;
+  // for (int i = 0; i < 700; i++) {
+  //   /* Double loop for more interesting results. */
+  //   for (int j = 0; j < 700; j++) {
+  //     for (int k = 0; k < 700; k++) {
+  //       if (k == 500) {
+  //           getrusage (RUSAGE_SELF, &usage);
+  //       }
+  //     }
+  //   }
+  // }
+  // printf ("CPU time: %ld.%06ld sec user, %ld.%06ld sec system\n",
+  //    usage.ru_utime.tv_sec, usage.ru_utime.tv_usec,
+  //    usage.ru_stime.tv_sec, usage.ru_stime.tv_usec);
+  // struct rusage usage;
+  // struct timeval start, end;
+  // int i, j, k = 0;
+  //
+  // getrusage(RUSAGE_SELF, &usage);
+  // start = usage.ru_stime;
+  // for (i = 0; i < 10000; i++) {
+  //   /* Double loop for more interesting results. */
+  //   for (j = 0; j < 10000; j++) {
+  //     k += 20;
+  //   }
+  // }
+  // usleep(1000);
+  // getrusage(RUSAGE_SELF, &usage);
+  // end = usage.ru_stime;
+  //
+  // printf("Started at: %ld.%lds\n", start.tv_sec, start.tv_usec);
+  // printf("Ended at: %ld.%lds\n", end.tv_sec, end.tv_usec);
+       // int getloadavg(double loadavg[], int nelem);
+    // long double a[4], b[4], loadavg;
+    // FILE *fp;
+    // char dump[50];
+    //
+    // for(;;)
+    // {
+    //     fp = fopen("/proc/stat","r");
+    //     fscanf(fp,"%*s %Lf %Lf %Lf %Lf",&a[0],&a[1],&a[2],&a[3]);
+    //     fclose(fp);
+    //     sleep(1);
+    //
+    //     fp = fopen("/proc/stat","r");
+    //     fscanf(fp,"%*s %Lf %Lf %Lf %Lf",&b[0],&b[1],&b[2],&b[3]);
+    //     fclose(fp);
+    //
+    //     loadavg = ((b[0]+b[1]+b[2]) - (a[0]+a[1]+a[2])) / ((b[0]+b[1]+b[2]+b[3]) - (a[0]+a[1]+a[2]+a[3]));
+    //     printf("The current CPU utilization is : %Lf\n",loadavg);
+    // }
   // TRY {
   //    printf("In Try Statement\n");
   //    // THROW;

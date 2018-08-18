@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <pthread.h>
 #include <sched.h>
+#include "proc.h"
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
@@ -18,6 +19,9 @@ void *hiloProcesar(void *arg);
 void matarServidor(int senal) {
   pid_t pmaster = getpid();
   printf(ANSI_COLOR_RED "Se ha detenido el servidor %d" ANSI_COLOR_RESET "\n", pmaster);
+  // KILL ALL CHILDRENS
+  // pthread_cleanup_push(NULL, NULL);
+  // pthread_cancel(NULL);
   pthread_exit(NULL);
   close(pmaster);
 }
@@ -60,15 +64,22 @@ int main() {
 }
 
 void *hiloProcesar(void *arg) {
-  // cpu_set_t my_set;
-  // CPU_ZERO(&my_set);
-  // CPU_SET(3, &my_set);
-  // sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
+  int procesador = proc_obtenerProcesosMenosUsado(NULL);
+  cpu_set_t my_set;
+  CPU_ZERO(&my_set);
+  CPU_SET(procesador, &my_set);
+  sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
   int cpu = sched_getcpu();
-  printf("CPU: %d\n", cpu);
+  printf("Asignado el procesador: %d\n", cpu);
   int *param = (int *)arg;
   int sock = param[0];
-  sleep(5);
+  int n = 900;
+  for(int i=1; i<=n; ++i) {
+    for(int i=1; i<=n; ++i) {
+      for(int i=1; i<=n; ++i) {
+      }
+    }
+  }
   write(sock,"a",1);
   close(sock);
   return NULL;

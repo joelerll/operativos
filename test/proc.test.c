@@ -14,8 +14,10 @@ int main() {
     cpu = cpus[contador];
     contador++;
   } while (cpu != NULL);
-  assert((contador - 1) == CPUs);
+  assert((contador - 2) == CPUs);
 
-  // 7.642804, CPU2
+  int procesador = proc_obtenerProcesosMenosUsado("./test/proc");
+  assert(procesador == 8);
+
   return 0;
 }
