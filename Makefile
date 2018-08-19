@@ -25,7 +25,7 @@ server: src/socket.server.c obj/tabla.o
 	./bin/server
 
 server.t: src/socket.server.threads.c proc.o utils.o
-	gcc -Wall -Iinclude/ -pthread obj/utils.o obj/proc.o src/socket.server.threads.c -o bin/server
+	@gcc -Wall -Iinclude/ -pthread obj/utils.o obj/proc.o src/socket.server.threads.c -o bin/server
 	@./bin/server
 
 client: src/socket.client.c

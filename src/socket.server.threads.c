@@ -12,6 +12,7 @@
 #include <sched.h>
 #include <syscall.h>
 #include <fcntl.h>
+
 #include "proc.h"
 #include "utils.h"
 
@@ -22,8 +23,11 @@
 
 const char *archivoFormato = "%s/%d.c";
 const char *compilar = "gcc .data/%d.c -o .data/%d.out 2>&1";
-const char *ejecutar = "./.data/%d.out";
+const char *ejecutar = "./.data/%d.out 2>&1";
 const char *enviar = "{ \"estado\": \"%s\", \"mensaje\": \"%s\", \"datos\": \"%s\"}";
+const char *pid = "cat /proc/%d/stat";
+const char *pid2 = "ps  -u -p %d"; //--no-headers
+const char *pid3 = "ps H -o 'pid tid comm pcpu' %d";
 pthread_mutex_t lock;
 
 void error(char *msg) { perror(msg); exit(-1); }
@@ -58,43 +62,54 @@ int main() {
   signal(SIGINT, SIG_IGN);
   signal(SIGTSTP, matarServidor);
   pthread_t thread_id;
+  pid_t pmaster = getpid();
+
+  printf("El servidor esta corriendo\n");
 
   while(1) {
     client_socket = accept(sockfd, NULL, NULL);
     if (client_socket < 0) {
       close(client_socket);
-      perror("Erro al conectarse\n");
+      error("Error al conectarse\n");
     }
-    int *param = (int *)malloc(1 * sizeof(int));
+    int *param = (int *)malloc(2 * sizeof(int));
     param[0] = client_socket;
+    param[1] = pmaster;
     if(pthread_create(&thread_id, NULL, hiloProcesar, param) < 0) {
-     perror("No se pudo crear el socket\n");
+     error("No se pudo crear el socket\n");
      return EXIT_FAILURE;
     }
   }
-  return 0;
+  return EXIT_SUCCESS;
 }
 
-// pthread_mutex_lock(&lock);
-// pthread_mutex_unlock(&lock);
 void *hiloProcesar(void *arg) {
-  // asignacion al procesador
   int *param = (int *)arg;
   int sock = param[0];
+
+	/* === PRUEBAS ==== */
+  // pid_t pmaster = param[1];
+  // pid_t hiloId = syscall(SYS_gettid);
+  // char datos[30];
+  // snprintf(datos, sizeof(datos), pid2, pmaster);
+  // system(datos);
+  // printf("El id el hilo: %d\n",hiloId);
+	/* === PRUEBAS ==== */
+
+  // asignacion al procesador
   int procesador = proc_obtenerProcesosMenosUsado(NULL);
   cpu_set_t my_set;
   CPU_ZERO(&my_set);
   CPU_SET(procesador, &my_set);
   sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
   int cpu = sched_getcpu();
-  printf("Asignado el procesador: %d\n", cpu);
+  printf("Asignado el procesador: %d\n", cpu); // CLEAN: mensaje para debug
 
   // generar archivo
-  int userId = u_random_number(1,8000000);
-  char nombreArchivo[20];
+  int userId = u_random_number(1,8000000); // FIX: cambiar esta por uno que genere un string "mas" random
+  char nombreArchivo[30];
   memset(nombreArchivo, 0, sizeof(nombreArchivo));
   snprintf(nombreArchivo, sizeof(nombreArchivo), archivoFormato, ".data", userId);
-  printf("%s\n", nombreArchivo);
   int fp = open(nombreArchivo, O_WRONLY | O_APPEND | O_CREAT, 0777);
 
   if (fp < 0) {
@@ -108,8 +123,8 @@ void *hiloProcesar(void *arg) {
   close(fp);
 
   // compilar
-  char rutaCompilado[50];
-  char rutaEjecutar[25];
+  char rutaCompilado[60];
+  char rutaEjecutar[35];
   char respuesta[900];
   char enviarDatos[90000];
   char buf[10];
@@ -121,6 +136,8 @@ void *hiloProcesar(void *arg) {
     exiteError = 1;
   }
   fclose(fp_compilar);
+
+  // ejecutar
   if (exiteError) {
     snprintf(enviarDatos, sizeof(enviarDatos), enviar, "false", "hubo un error al compilar", respuesta);
     write(sock,enviarDatos,strlen(enviarDatos));

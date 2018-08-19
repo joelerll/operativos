@@ -1,5 +1,42 @@
+// /proc/self/task/[tid]/comm
+// /proc/pid/tasks
+// cat /proc/5990/task/5990/comm
+// pthread_mutex_lock(&lock);
+// pthread_mutex_unlock(&lock);
+// /proc/cpuinfo.
+
 top -bn 1
 top -n 1
+https://serverfault.com/questions/908459/what-is-the-unit-of-a-page-in-proc-pid-statm
+size       (1) total program size
+           (same as VmSize in /proc/[pid]/status)
+resident   (2) resident set size
+           (same as VmRSS in /proc/[pid]/status)
+share      (3) shared pages (i.e., backed by a file)
+text       (4) text (code)
+lib        (5) library (unused in Linux 2.6)
+data       (6) data + stack
+dt         (7) dirty pages (unused in Linux 2.6)
+
+    PID – l’ID of the process(4522)
+    USER – The user that is the owner of the process (root)
+    PR – priority of the process (15)
+    NI – The “NICE” value of the process (0)
+    VIRT – virtual memory used by the process (132m)
+    RES – physical memory used from the process (14m)
+    SHR – shared memory of the process (3204)
+    S – indicates the status of the process: S=sleep R=running Z=zombie (S)
+    %CPU – This is the percentage of CPU used by this process (0.3)
+    %MEM – This is the percentage of RAM used by the process (0.7)
+    TIME+ –This is the total time of activity of this process (0:17.75)
+    COMMAND – And this is the name of the process (bb_monitor.pl)
+
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+ps --no-headers -u -p 2969
+
+ps -eo pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,wchan:14,comm
+          ps axo stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm
+          ps -Ao pid,tt,user,fname,tmout,f,wchan
 
 Any field is selectable as the sort field, and you control whether
 they  are  sorted  high-to-low  or  low-to-high.   For  additional
