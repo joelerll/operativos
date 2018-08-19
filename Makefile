@@ -1,9 +1,15 @@
 .PHONY: clean
 
-all: client server
+all: main
 
 main:
-	gcc -Wall src/main.c -o bin/main -pthread
+	cd parson
+	make
+	cd ..
+	# gcc -Wall src/main.c -o bin/main -pthread
+
+parson.o: parson/parson.c
+	gcc -c -Wall -Iparson/ parson/parson.c -o obj/parson.o
 
 tabla.o: src/tabla.c
 	gcc -c -Wall -Iinclude/ src/tabla.c -o obj/tabla.o
@@ -26,8 +32,8 @@ client: src/socket.client.c
 	gcc  -Wall -Wextra src/socket.client.c -o bin/client -pthread
 	./bin/client test/dump/hello.c
 
-prueba: src/prueba.c tabla.o
-	gcc  -pthread -Iinclude/ obj/tabla.o src/prueba.c  -o prueba
+prueba: src/prueba.c tabla.o parson.o
+	gcc  -pthread -Iinclude/ -Iparson/ obj/tabla.o  obj/parson.o src/prueba.c  -o prueba
 	./prueba
 
 utils.test: src/utils.c utils.o

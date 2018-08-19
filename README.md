@@ -30,9 +30,9 @@ make
 * Joel Rodriguez
 
 # TODO
-[ ] enviar archivo del cliente al server
-[ ] probrar libreria de json
-[ ] obtner la carga de los cpus
+[x] enviar archivo del cliente al server
+[x] probrar libreria de json
+[ ] obtener la carga de los cpus
 [ ] obtener datos de todos los hilos (uso memoria, disco, cpu, tasas de proceso en ejecucion x tiempo), guardarlo en un .log
 [ ] obtener datos de todos los procesos de la pc
 [ ] como mostrar esos datos?
@@ -41,6 +41,7 @@ make
 [ ] seleccionar, pausar, continuar y terminar procesos
 [ ] como hacer las pruebas de cada cosa?
 
+[ ] enviar archivos y recibir respuesta por socket streming
 [ ] implementar thread pool
 [ ] servidor raw en python
 [ ] diseno de pagina web para enviar codigo y recibir la respuestas (material design)

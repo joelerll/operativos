@@ -23,6 +23,7 @@
 const char *archivoFormato = "%s/%d.c";
 const char *compilar = "gcc .data/%d.c -o .data/%d.out 2>&1";
 const char *ejecutar = "./.data/%d.out";
+const char *enviar = "{ \"estado\": \"%s\", \"mensaje\": \"%s\", \"datos\": \"%s\"}";
 pthread_mutex_t lock;
 
 void error(char *msg) { perror(msg); exit(-1); }
@@ -100,7 +101,7 @@ void *hiloProcesar(void *arg) {
     printf("Error al crear el archivo\n");
     perror("Error");
   }
-  unsigned char recvBuff[8000000];
+  unsigned char recvBuff[800000];
   int bytesReceived = 0;
   bytesReceived = read(sock, recvBuff, sizeof(recvBuff));
   write(fp, recvBuff, bytesReceived);
@@ -108,8 +109,9 @@ void *hiloProcesar(void *arg) {
 
   // compilar
   char rutaCompilado[50];
-  char rutaEjecutar[50];
+  char rutaEjecutar[25];
   char respuesta[900];
+  char enviarDatos[90000];
   char buf[10];
   snprintf(rutaCompilado, sizeof(rutaCompilado), compilar, userId, userId);
   FILE *fp_compilar = popen(rutaCompilado, "r");
@@ -120,7 +122,8 @@ void *hiloProcesar(void *arg) {
   }
   fclose(fp_compilar);
   if (exiteError) {
-    write(sock,respuesta,strlen(respuesta));
+    snprintf(enviarDatos, sizeof(enviarDatos), enviar, "false", "hubo un error al compilar", respuesta);
+    write(sock,enviarDatos,strlen(enviarDatos));
   } else {
     memset(rutaEjecutar, 0, sizeof(rutaEjecutar));
     snprintf(rutaEjecutar, sizeof(rutaEjecutar), ejecutar, userId);
@@ -129,7 +132,8 @@ void *hiloProcesar(void *arg) {
       strcat(respuesta, buf);
     }
     fclose(fp_ejecutar);
-    write(sock,respuesta,strlen(respuesta));
+    snprintf(enviarDatos, sizeof(enviarDatos), enviar, "true", "todo en orden", respuesta);
+    write(sock,enviarDatos,strlen(enviarDatos));
   }
   close(sock);
   return NULL;

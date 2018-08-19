@@ -3,9 +3,13 @@ import multiprocessing
 import socket
 import time
 from string import Template
+import json
+import random
+
 def enviarArchivo(i):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serversocket.connect(('localhost', 5000))
+    opciones = [';', '']
     mensaje = """
 	#include <stdio.h>
 	int main () {
@@ -17,13 +21,20 @@ def enviarArchivo(i):
         }
       }
 	  printf("Hola");
-	  printf("Como estan %s");
+	  printf("Como estan %s")%s
 	  return 0;
 	}
-	""" % (str(i))
+	""" % (str(i), random.choice(opciones))
     serversocket.send(str.encode(str(mensaje)))
     serverMensaje = serversocket.recv(1024)
-    print(serverMensaje)
+    mensajeLimpiado = serverMensaje.decode("utf-8")
+    try:
+        o = json.loads(mensajeLimpiado, strict=False)
+        print(o['datos'])
+    except ValueError:
+        print("\n\n===== ERROR =========")
+        print(mensajeLimpiado)
+        print("\n")
     return
 
 if __name__ == '__main__':
