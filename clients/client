@@ -10,21 +10,24 @@ def enviarArchivo(i):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serversocket.connect(('localhost', 5000))
     opciones = [';']
+    opcionesRam = [200, 300, 600]
     mensaje = """
 	#include <stdio.h>
+    #include <unistd.h>
 	int main () {
-      int n = 600;
+      int n = %s;
       for(int i=1; i<=n; ++i) {
         for(int i=1; i<=n; ++i) {
           for(int i=1; i<=n; ++i) {
           }
         }
       }
+      sleep(2);
 	  printf("Hola");
 	  printf("Como estan %s")%s
 	  return 0;
 	}
-	""" % (str(i), random.choice(opciones))
+	""" % (random.choice(opcionesRam), str(i), random.choice(opciones))
     serversocket.send(str.encode(str(mensaje)))
     serverMensaje = serversocket.recv(1024)
     mensajeLimpiado = serverMensaje.decode("utf-8")

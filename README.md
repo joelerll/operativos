@@ -37,9 +37,11 @@ make
 [x] enviar archivo del cliente al server
 [x] probrar libreria de json
 [x] obtener la carga de los cpus y mostralos en consola
-[ ] pruebas con shared memory
+[x] cambiado a procesos
+[ ] cambiar popen por exec()
+[ ] pruebas con shared memory o memory map (cual es mejor?)
 [ ] recoger variables en un array de procesos hijos
-[ ] obtener datos de todos los hilos del programa (
+[ ] obtener datos de todos los procesos del programa (
   uso memoria, cat /proc/2311/task/10935/statm
   disco,
   cpu, tasas de proceso en ejecucion x tiempo),

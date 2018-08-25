@@ -81,7 +81,7 @@ ProcFile **proc_listaProcesos (char *archivo, long int tiempo) {
 int proc_obtenerProcesosMenosUsado (char *archivo) {
   int procesador = 0;
   double procentajeTmp = 0.0;
-  int contador = 1; // empieza en uno porque al leer el archiv /proc/stat, lo que primero esta es las estadisticas de todos los procesadores
+  int contador = 1; // empieza en uno porque al leer el archivo /proc/stat lo que primero esta son las estadisticas de todos los procesadores
   ProcFile **listaProcesadores = proc_listaProcesos(archivo, 500);
   ProcFile *cpu;
   do {
@@ -102,16 +102,18 @@ void proc_imprimir_porcentajesCPUs (char *archivo) {
 	do {
 		cpu = listaProcesadores[contador];
 		if (cpu != NULL) {
-			printf("%s %.2f\n", cpu->nombre, cpu->porcentajeUso);
+			printf("%s %.2f%%\n", cpu->nombre, cpu->porcentajeUso);
 		}
 		contador++;
 	} while (cpu != NULL);
-	sleep(1);
+	// sleep(1);
+	usleep(500000);
+	printf("=================\n");
 	// limpiar el stdout
-	for (size_t i = 0; i < CPUs; i++) {
-		fputs("\033[A\033[2K",stdout);
-		rewind(stdout);
-	}
+	// for (size_t i = 0; i < CPUs; i++) {
+	// 	fputs("\033[A\033[2K",stdout);
+	// 	rewind(stdout);
+	// }
 	free(listaProcesadores);
 }
 
