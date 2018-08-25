@@ -42,7 +42,7 @@ void proc_crearSiguiente (ProcFile *proc, char* user, char *nice, char *systemPr
   }
 }
 
-ProcFile **proc_listaProcesos (char *archivo) {
+ProcFile **proc_listaProcesos (char *archivo, long int tiempo) {
   ProcFile **procesos = malloc(sizeof(ProcFile*) * (CPUs + 2) );
   char file[] = "/proc/stat";
   FILE *fp;
@@ -61,8 +61,7 @@ ProcFile **proc_listaProcesos (char *archivo) {
     }
   }
   fclose(fp);
-
-  usleep(50); // porque si se lee apenas se cierra el archivo, no da estadisticas correctas. Practicamente da lo mismo que la primera lectura
+  usleep(tiempo); // porque si se lee apenas se cierra el archivo, no da estadisticas correctas. Practicamente da lo mismo que la primera lectura
   if (archivo != NULL) {
     fp = fopen(archivo,"r");
   } else {
@@ -83,21 +82,77 @@ int proc_obtenerProcesosMenosUsado (char *archivo) {
   int procesador = 0;
   double procentajeTmp = 0.0;
   int contador = 1; // empieza en uno porque al leer el archiv /proc/stat, lo que primero esta es las estadisticas de todos los procesadores
-  ProcFile **listaProcesadores = proc_listaProcesos(archivo);
+  ProcFile **listaProcesadores = proc_listaProcesos(archivo, 500);
   ProcFile *cpu;
   do {
     cpu = listaProcesadores[contador];
-    if (cpu != NULL) {
-      if ((procentajeTmp > cpu->porcentajeUso) || (procentajeTmp == 0.0)) {
-        procentajeTmp = cpu->porcentajeUso;
-        procesador = contador;
-      }
+    if (cpu != NULL && ((procentajeTmp > cpu->porcentajeUso) || (procentajeTmp == 0.0))) {
+      procentajeTmp = cpu->porcentajeUso;
+      procesador = contador;
     }
     contador++;
   } while (cpu != NULL);
   return procesador;
 }
+
+void proc_imprimir_porcentajesCPUs (char *archivo) {
+	int contador = 1;
+	ProcFile **listaProcesadores = proc_listaProcesos(archivo, 1e+6); // 500000 1e+6
+	ProcFile *cpu;
+	do {
+		cpu = listaProcesadores[contador];
+		if (cpu != NULL) {
+			printf("%s %.2f\n", cpu->nombre, cpu->porcentajeUso);
+		}
+		contador++;
+	} while (cpu != NULL);
+	sleep(1);
+	// limpiar el stdout
+	for (size_t i = 0; i < CPUs; i++) {
+		fputs("\033[A\033[2K",stdout);
+		rewind(stdout);
+	}
+	free(listaProcesadores);
+}
+
+// * uso memoria del cpu cat /proc/2311/statm * uso memoria de un hilo, cat /proc/2311/task/10935/statm
+// 715888 144996 39581 52 0 437733 0
+// // /proc/<pid>/statm
+// //
+// // /proc/<pid>/statm fields: columns are (in pages):
+// // total program size|
+// // resident set size|
+// // shared pages|
+// // text (code) |
+// // data/stack |
+// // library |
+// // dirty pages |
+// //
+// // Here an example: 693 406 586 158 0 535 0
+// // en Kb
 //
-// int **proc_porcentajesCPUs () {
 //
-// }
+// * disco cat /proc/2311/task/10935/io
+// rchar: 0
+// wchar: 0
+// syscr: 0
+// syscw: 0
+// read_bytes: 106496
+// write_bytes: 0
+// cancelled_write_bytes: 0
+//
+// // rchar: number of bytes the process read, using any read-like system call (from files, pipes, tty...).
+// //
+// // wchar: number of bytes the process wrote using any write-like system call.
+// //
+// // syscr: number of read-like system call invocations that the process performed.
+// //
+// // syscr: number of write-like system call invocations that the process performed.
+// //
+// // read_bytes: number of bytes the process directly read from disk. write_bytes: number of bytes the process originally dirtied in the page-cache (assuming they will go to disk later). cancelled_write_bytes: number of bytes the process "un-dirtied" - e.g. using an "ftruncate" call that truncated pages from the page-cache.
+//
+//
+// * cpu cat /proc/2311/task/10935/stat
+// 10935 (FS Broker 10918) S 2310 2309 2309 0 -1 4194624 104 191674 0 31 52 144 651 137 20 0 81 0 50564 2764587008 142913 18446744073709551615 4194304 4406196 140721785014208 139924852149232 139925611411789 0 0 4096 17663 1 0 0 -1 4 0 0 27 0 0 6503376 6505552 14000128 140721785016687 140721785016742 140721785016742 140721785020361 0
+//
+// * contar cantidad de procesos usados y terminados por minutos

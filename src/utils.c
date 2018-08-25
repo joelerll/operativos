@@ -23,6 +23,8 @@ void u_trim(char * s) {
   memmove(s, p, l + 1);
 }
 
+void u_clear() { system("clear"); }
+
 // deprecated
 int u_id_generator(unsigned long u_id) {
   struct timeval t;

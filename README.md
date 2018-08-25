@@ -29,31 +29,42 @@ make
 
 * Joel Rodriguez
 
+## Preguntas
+* Las estadisticas son de todo el sistema o solo del programa?
+* es un top el programa, debo guardar lo mismo de ahi?, cada cuanto tiempo deberia?z
+
 # TODO
 [x] enviar archivo del cliente al server
 [x] probrar libreria de json
-[ ] probar los metodos de shrared memory
-[ ] pasar todo a procesos ?
-[ ] obtener la carga de los cpus
-[ ] obtener datos de todos los procesos del programa y del sistema (uso memoria, disco, cpu, tasas de proceso en ejecucion x tiempo), guardarlo en un .log
-[ ] como mostrar esos datos?, draw tables para mostrar information
-
+[x] obtener la carga de los cpus y mostralos en consola
+[ ] pruebas con shared memory
+[ ] recoger variables en un array de procesos hijos
+[ ] obtener datos de todos los hilos del programa (
+  uso memoria, cat /proc/2311/task/10935/statm
+  disco,
+  cpu, tasas de proceso en ejecucion x tiempo),
+  obtener porcentajes de cpu
+  guardar media, mediana, promedio (estaditicas basicas)
+[ ] generar reportes por medio de senales (Ej: mandar por senal que cada 5 segundos me genere reporte)
+[ ] Detectar la ocurrencia de major/minor page faults en el sistema de todo?
+[ ] guardarlo en un .log
 [ ] detectar procesos que superen un tiempo te
-[ ] seleccionar, pausar, continuar y terminar procesos. Como se hace la interaccion de esto?
-[ ] como hacer las pruebas de cada cosa?
-
+[ ] seleccionar, pausar, continuar y terminar procesos. Usar senales
+[ ] como hacer las pruebas de cada cosa?, como ingresaria esto?
+[ ] Guardar datos en una tabla compartida userId, fecha, respuesta, rutaEjecutableFuente, rutaCodigoFuente, ordenLlegada
 [ ] enviar archivos y recibir respuesta por socket streming
-[ ] implementar thread pool
+
+
+-- Extras
 [ ] servidor raw en python
 [ ] diseno de pagina web para enviar codigo y recibir la respuestas (material design)
+[ ] probar los metodos de shrared memory
 
 # FIX:
 
 # Primer parcial
 * Pasar json entre cliente y servidor para enviar datos de respuesta ?
 * El cliente debe recibir la respuesta (sockets streaming?) (Feature: junto con el id) ?
-* Guardar datos en una tabla compartida userId, fecha, respuesta, rutaEjecutableFuente, rutaCodigoFuente, ordenLlegada
-
 ## Segundo Parcial
 
 ```txt
@@ -104,7 +115,6 @@ https://www.usna.edu/Users/cs/aviv/classes/ic221/s16/lec/05/lec.html
 
 https://gist.github.com/oleksiiBobko/43d33b3c25c03bcc9b2b
 
-
 https://github.com/fho/code_snippets/blob/master/c/getusage.c
 
 https://github.com/scaidermern/top-processes/blob/master/top_proc.c
@@ -116,6 +126,10 @@ https://github.com/mbrossard/threadpool
 https://www.csd.uoc.gr/~hy556/material/tutorials/cs556-3rd-tutorial.pdf
 
 https://www.pslinux.online/ps-examples.html
+
+https://stackoverflow.com/questions/17006262/clearing-output-of-a-terminal-program-in-linux-c
+
+http://www.cypress.com/file/54441/download
 
 # OJO
 

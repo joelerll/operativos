@@ -20,5 +20,6 @@ typedef struct procTDA{
   double porcentajeUso;
 }ProcFile;
 
-ProcFile **proc_listaProcesos (char *archivo);
+ProcFile **proc_listaProcesos (char *archivo, long int tiempo);
 int proc_obtenerProcesosMenosUsado (char *archivo);
+void proc_imprimir_porcentajesCPUs (char *archivo);

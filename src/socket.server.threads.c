@@ -29,12 +29,15 @@ const char *pid = "cat /proc/%d/stat";
 const char *pid2 = "ps  -u -p %d"; //--no-headers
 const char *pid3 = "ps H -o 'pid tid comm pcpu' %d";
 pthread_mutex_t lock;
-
+pid_t hiloMonitor;
 void error(char *msg) { perror(msg); exit(-1); }
 void *hiloProcesar(void *arg);
+void *monitor(void *arg);
 void matarServidor(int senal) {
   pid_t pmaster = getpid();
   printf(ANSI_COLOR_RED "Se ha detenido el servidor %d" ANSI_COLOR_RESET "\n", pmaster);
+	printf("Se ha detenido el hilo monitor: %d\n", hiloMonitor);
+	pthread_cancel(hiloMonitor);
   pthread_exit(NULL);
   close(pmaster);
 }
@@ -66,6 +69,14 @@ int main() {
 
   printf("El servidor esta corriendo\n");
 
+	// cliente monitor
+	int *param = (int *)malloc(2 * sizeof(int));
+	param[0] = pmaster;
+	if(pthread_create(&thread_id, NULL, monitor, param) < 0) {
+		error("No se pudo crear el monitor\n");
+		return EXIT_FAILURE;
+	}
+
   while(1) {
     client_socket = accept(sockfd, NULL, NULL);
     if (client_socket < 0) {
@@ -83,7 +94,15 @@ int main() {
   return EXIT_SUCCESS;
 }
 
-void *hiloProcesar(void *arg) {
+void *monitor (void *arg) {
+	hiloMonitor = syscall(SYS_gettid);
+	while (1) {
+		proc_imprimir_porcentajesCPUs(NULL);
+	}
+	return NULL;
+}
+
+void *hiloProcesar (void *arg) {
   int *param = (int *)arg;
   int sock = param[0];
 

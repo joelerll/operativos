@@ -8,60 +8,80 @@
 #include <sched.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <setjmp.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-pthread_t tid[2];
+static int *glob_var = 0;
+int x = 0;
 
-// pthread_t tid[2];
-// int counter;
+typedef struct persona {
+	int edad;
+} Persona;
 
-// void contador () {
-// 	printf("%s\n", a);
+int main() {
+
+  int size = 100 * sizeof(int);
+  void *addr = mmap(0, size, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+  printf("Mapped at %p\n", addr);
+
+  int *shared = addr;
+  pid_t mychild = fork();
+  if (mychild > 0) {
+    shared[0] = 10;
+    shared[1] = 20;
+  } else {
+		wait(NULL);
+    // sleep(1); // We will talk about synchronization later
+    printf("%d\n", shared[1] + shared[0]);
+  }
+
+  munmap(addr,size);
+  return 0;
+}
+
+// int main(void) {
+//     glob_var = mmap(NULL, sizeof *glob_var, PROT_READ | PROT_WRITE,
+//                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+//     *glob_var = 1;
+//
+//     if (fork() == 0) {
+//         *glob_var = 5;
+// 				printf("Hijo %d\n", x);
+//         exit(EXIT_SUCCESS);
+//     } else {
+//         wait(NULL);
+//         printf("%d\n", *glob_var);
+// 				printf("Padre %d\n", x);
+//         munmap(glob_var, sizeof *glob_var);
+//     }
+//     return 0;
+// }
+// int main(void) {
+	// int pid = execl("/bin/ls", "/bin/ls", (char *)0);
+	// printf("Pid: %d\n", pid);
 // }
 
-void* trythis(void *arg)
-{
-	int *param = (int *)arg;
-	int sock = param[0];
-    unsigned long i = 0;
-		int contador = 1;
-		// printf("Hilo creado:\n");
-		if (sock == 0) {
-			sleep(2);
-		}
-		printf("Hilo %d, Contador%d\n", sock, contador);
-		contador++;
-		// sleep(2);
-		// int counter = 1;
-    // counter += 1;
-    // printf("\n Job %d has started\n", counter);
 
-    // for(i=0; i<(0xFFFFFFFF);i++);
-    // printf("\n Job %d has finished\n", counter);
 
-    return NULL;
-}
-
-int main(void)
-{
-    int i = 0;
-    int error;
-
-    while(i < 2)
-    {
-				int *param = (int *)malloc(2 * sizeof(int));
-				param[0] = i;
-				printf("%d\n", i);
-        error = pthread_create(&(tid[i]), NULL, &trythis, param);
-        if (error != 0)
-            printf("\nThread can't be created : [%s]", strerror(error));
-        i++;
-    }
-
-    pthread_join(tid[0], NULL);
-    pthread_join(tid[1], NULL);
-
-    return 0;
-}
+// pid_t child_pid, wpid;
+// int status = 0;
+//
+// int n = 5;
+// for (int id=0; id < n; id++) {
+// 	if ((child_pid = fork()) == 0) {
+// 			printf("Hijo %d\n", child_pid);
+// 			exit(0);
+// 	}
+// }
+//
+// while ((wpid = wait(&status)) > 0);
