@@ -24,8 +24,9 @@
 #define MAXANSWERSIZE 10
 
 const char *archivoFormato = "%s/%d.c";
-const char *compilar = "gcc .data/%d.c -o .data/%d.out 2>&1";
-const char *ejecutar = "./.data/%d.out 2>&1";
+const char *compilar = "gcc .data/%d.c -o .data/%d.out"; //  2>&1
+const char *salida = ".data/%d.out";
+const char *ejecutar = "./.data/%d.out"; //  2>&1
 const char *enviar = "{ \"estado\": \"%s\", \"mensaje\": \"%s\", \"datos\": \"%s\"}";
 const char *pid = "cat /proc/%d/stat";
 const char *pid2 = "ps  -u -p %d"; //--no-headers
@@ -134,7 +135,7 @@ int main() {
 
 void *monitor (void *arg) {
 	// procesos *procesosIds  = (procesos*)arg;
-	hiloMonitor = syscall(SYS_gettid);
+	// hiloMonitor = syscall(SYS_gettid);
 	while (1) {
 		// for (size_t i = 0; i < ARRAY_ELEMENTS; i++) {
 		// 	if (procesosIds->array[i] == 0) {
@@ -165,45 +166,72 @@ void procesar (int sock) {
   snprintf(nombreArchivo, sizeof(nombreArchivo), archivoFormato, ".data", userId);
   int fp = open(nombreArchivo, O_WRONLY | O_APPEND | O_CREAT, 0777);
 
-  if (fp < 0) {
-    printf("Error al crear el archivo\n");
-    perror("Error");
-  }
+  if (fp < 0) { error("Error al crear archivo"); }
+
   unsigned char recvBuff[800000];
   int bytesReceived = 0;
   bytesReceived = read(sock, recvBuff, sizeof(recvBuff));
   write(fp, recvBuff, bytesReceived);
   close(fp);
 
-  // compilar
-  char rutaCompilado[60];
-  char rutaEjecutar[35];
-  char respuesta[900];
-  char enviarDatos[90000];
-  char buf[10];
-  snprintf(rutaCompilado, sizeof(rutaCompilado), compilar, userId, userId);
-  FILE *fp_compilar = popen(rutaCompilado, "r");
-  int exiteError = 0;
-  while (fgets(buf, sizeof(buf), fp_compilar) != 0) { // esperar a que termine de compilar
-    strcat(respuesta, buf);
-    exiteError = 1;
-  }
-  fclose(fp_compilar);
+	char rutaCompilado[60];
+	char rutaEjecutar[35];
+	char respuesta[900];
+	char enviarDatos[90000];
 
-  // ejecutar
-  if (exiteError) {
-    snprintf(enviarDatos, sizeof(enviarDatos), enviar, "false", "hubo un error al compilar", respuesta);
-    write(sock,enviarDatos,strlen(enviarDatos));
-  } else {
-    memset(rutaEjecutar, 0, sizeof(rutaEjecutar));
-    snprintf(rutaEjecutar, sizeof(rutaEjecutar), ejecutar, userId);
-    FILE *fp_ejecutar = popen(rutaEjecutar, "r");
-    while (fgets(buf, sizeof(buf), fp_ejecutar) != 0) {
-      strcat(respuesta, buf);
-    }
-    fclose(fp_ejecutar);
-    snprintf(enviarDatos, sizeof(enviarDatos), enviar, "true", "todo en orden", respuesta);
-    write(sock,enviarDatos,strlen(enviarDatos));
-  }
-  close(sock);
+	int link[2];
+	pid_t pid;
+	if (pipe(link) == -1) { error("Error al crear pipe: "); }
+	if ((pid = fork()) == -1) { error("Error al crear proceso "); }
+
+	if (pid == 0) {
+		// redirigirlo
+		int procesador = proc_obtenerProcesosMenosUsado(NULL);
+		cpu_set_t my_set;
+		CPU_ZERO(&my_set);
+		CPU_SET(procesador, &my_set);
+		sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
+		// redirigirlo
+		dup2(link[1], STDERR_FILENO);
+		close(link[0]);
+		close(link[1]);
+	  snprintf(rutaCompilado, sizeof(rutaCompilado), salida, userId);
+		execl("/usr/bin/gcc", "/usr/bin/gcc", nombreArchivo, "-o", rutaCompilado, (char *)0);
+	} else {
+		close(link[1]);
+		int nbytes = read(link[0], respuesta, sizeof(respuesta));
+		if (nbytes > 0) { // si ocurrio un error
+			snprintf(enviarDatos, sizeof(enviarDatos), enviar, "false", "hubo un error al compilar", respuesta);
+			write(sock, error, sizeof(error));
+		} else {
+			// si compilo correctamente lo ejecutara y obtendra el resuldato del stdout
+			int link[2];
+			pid_t pid2;
+			if (pipe(link) == -1) { error("Error al crear pipe: "); }
+			if ((pid2 = fork()) == -1) { error("Error al crear proceso "); }
+			if (pid2 == 0) {
+				// redirigirlo
+				int procesador = proc_obtenerProcesosMenosUsado(NULL);
+			  cpu_set_t my_set;
+			  CPU_ZERO(&my_set);
+			  CPU_SET(procesador, &my_set);
+			  sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
+				// redirigirlo
+				memset(rutaEjecutar, 0, sizeof(rutaEjecutar));
+				snprintf(rutaEjecutar, sizeof(rutaEjecutar), ejecutar, userId);
+				dup2(link[1], STDOUT_FILENO);
+				close(link[0]);
+				close(link[1]);
+				execl(rutaEjecutar, rutaEjecutar, (char *)0);
+			} else {
+				close(link[1]);
+				read(link[0], respuesta, sizeof(respuesta));
+				snprintf(enviarDatos, sizeof(enviarDatos), enviar, "true", "todo en orden", respuesta);
+				write(sock, enviarDatos, sizeof(enviarDatos));
+				wait(NULL);
+				close(sock);
+			}
+		}
+		close(link[0]);
+	}
 }
