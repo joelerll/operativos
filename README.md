@@ -38,9 +38,9 @@ make
 [x] probrar libreria de json
 [x] obtener la carga de los cpus y mostralos en consola
 [x] cambiado a procesos
-[ ] cambiar popen por exec()
 [ ] pruebas con shared memory o memory map (cual es mejor?)
 [ ] recoger variables en un array de procesos hijos
+[ ] cambiar popen por exec()
 [ ] obtener datos de todos los procesos del programa (
   uso memoria, cat /proc/2311/task/10935/statm
   disco,
@@ -53,6 +53,7 @@ make
 [ ] detectar procesos que superen un tiempo te
 [ ] seleccionar, pausar, continuar y terminar procesos. Usar senales
 [ ] como hacer las pruebas de cada cosa?, como ingresaria esto?
+[ ] crear estructura para guardar datos y mostrarla?
 [ ] Guardar datos en una tabla compartida userId, fecha, respuesta, rutaEjecutableFuente, rutaCodigoFuente, ordenLlegada
 [ ] enviar archivos y recibir respuesta por socket streming
 
@@ -60,8 +61,6 @@ make
 -- Extras
 [ ] servidor raw en python
 [ ] diseno de pagina web para enviar codigo y recibir la respuestas (material design)
-[ ] probar los metodos de shrared memory
-
 # FIX:
 
 # Primer parcial
@@ -132,6 +131,8 @@ https://www.pslinux.online/ps-examples.html
 https://stackoverflow.com/questions/17006262/clearing-output-of-a-terminal-program-in-linux-c
 
 http://www.cypress.com/file/54441/download
+
+https://gist.github.com/ben-cohen/67d41a917ffbf7a5da99fd622feb346b
 
 # OJO
 

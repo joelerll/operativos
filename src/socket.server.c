@@ -13,6 +13,7 @@
 #include <syscall.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/mman.h>
 
 #include "proc.h"
 #include "utils.h"
@@ -33,9 +34,17 @@ pthread_mutex_t lock;
 pid_t hiloMonitor;
 pid_t pmaster = 0;
 pthread_t thread_id;
+int size = 500 * sizeof(int);
 void error(char *msg) { perror(msg); exit(-1); }
 void procesar (int newsockfd);
 void *monitor(void *arg);
+#define LENGTH            sizeof(struct procesos)
+#define ARRAY_ELEMENTS    500
+typedef struct procesos {
+  unsigned int array[ARRAY_ELEMENTS];
+	unsigned int cantidad;
+  pthread_mutex_t  mutex;
+} procesos;
 
 void matarServidor(int senal) {
   pid_t pmaster = getpid();
@@ -49,6 +58,17 @@ void matarServidor(int senal) {
 }
 
 int main() {
+	struct procesos *mapping = mmap(0, LENGTH, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+	pthread_mutexattr_t mutexattr;
+  int rc = pthread_mutexattr_init(&mutexattr);
+  if (rc != 0)
+    error("pthread_mutexattr_init");
+  rc = pthread_mutexattr_setpshared(&mutexattr, PTHREAD_PROCESS_SHARED);
+  if (rc != 0)
+    error("pthread_mutexattr_setpshared");
+  pthread_mutex_init(&mapping->mutex, &mutexattr);
+  if (rc != 0)
+    error("pthread_mutex_init");
 	int sockfd, newsockfd = 0;
   int pid;
   int option = 1;
@@ -67,16 +87,17 @@ int main() {
     error("ERROR en bind socket");
   }
 
-  listen(sockfd,100000);
+  listen(sockfd,1000);
   signal(SIGINT, SIG_IGN);
   signal(SIGTSTP, matarServidor);
 
   printf("El servidor esta corriendo\n");
 
 	// cliente monitor
-	int *param = (int *)malloc(2 * sizeof(int));
-	param[0] = pmaster;
-	if(pthread_create(&thread_id, NULL, monitor, param) < 0) {
+	// int *param = (int *)malloc(2 * sizeof(int));
+	// param[0] = pmaster;
+  // param[1] = mapping;
+	if(pthread_create(&thread_id, NULL, monitor, mapping) < 0) {
 		error("No se pudo crear el monitor\n");
 		return EXIT_FAILURE;
 	}
@@ -96,6 +117,11 @@ int main() {
 		  CPU_ZERO(&my_set);
 		  CPU_SET(procesador, &my_set);
 		  sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
+			pthread_mutex_lock(&mapping->mutex);
+      pid_t pmaster = getpid();
+      mapping->array[mapping->cantidad] = pmaster;
+			mapping->cantidad++;
+			pthread_mutex_unlock(&mapping->mutex);
 		  // int cpu = sched_getcpu();
 		  // printf("Asignado el procesador: %d\n", cpu); // CLEAN: mensaje para debug
 			procesar(newsockfd);
@@ -107,8 +133,15 @@ int main() {
 }
 
 void *monitor (void *arg) {
+	// procesos *procesosIds  = (procesos*)arg;
 	hiloMonitor = syscall(SYS_gettid);
 	while (1) {
+		// for (size_t i = 0; i < ARRAY_ELEMENTS; i++) {
+		// 	if (procesosIds->array[i] == 0) {
+		// 		break;
+		// 	}
+		// 	printf("%d\n", procesosIds->array[i]);
+		// }
 		proc_imprimir_porcentajesCPUs(NULL);
 	}
 	return NULL;

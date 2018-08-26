@@ -98,3 +98,25 @@ char **u_split(char *palabras, char letra) {
   }
   return palabrasSplit;
 }
+
+void u_delete_number (int *numeros, int tamano, int numero) {
+	int *numeroTmp = malloc(sizeof(int) * tamano);
+	int contadorReal = 0;
+	// copiar los elementos
+	for (size_t i = 0; i < tamano; i++) {
+		numeroTmp[i] = numeros[i];
+	}
+	
+	// encerar todos a 0
+	memset(numeros, 0, tamano);
+
+	// eliminar el numero
+	for (size_t i = 0; i < tamano; i++) {
+		if (numeroTmp[i] == numero) {
+			continue;
+		}
+		numeros[contadorReal] = numeroTmp[i];
+		contadorReal++;
+	}
+	free(numeroTmp);
+}

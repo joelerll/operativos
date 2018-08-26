@@ -1,28 +1,3 @@
-#define _GNU_SOURCE
-#define _BSD_SOURCE         /* See feature_test_macros(7) */
-#include <stdlib.h>
-#include<stdio.h>
-#include<string.h>
-#include<pthread.h>
-#include<unistd.h>
-#include <sched.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include <setjmp.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <pthread.h>
-#include <assert.h>
 
 #define MMAP_NAME         "/tmp/mmaptest"
 #define LENGTH            sizeof(struct mapped)
@@ -92,7 +67,6 @@ int main(int argc, char **argv)
                                                  MAP_SHARED,
                                                  fd,
                                                  0);
-
   if (mapping == MAP_FAILED)
     die("mmap");
   close(fd);
@@ -240,40 +214,3 @@ int main(int argc, char **argv)
 //   munmap(addr,size);
 //   return 0;
 // }
-
-// int main(void) {
-//     glob_var = mmap(NULL, sizeof *glob_var, PROT_READ | PROT_WRITE,
-//                     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-//     *glob_var = 1;
-//
-//     if (fork() == 0) {
-//         *glob_var = 5;
-// 				printf("Hijo %d\n", x);
-//         exit(EXIT_SUCCESS);
-//     } else {
-//         wait(NULL);
-//         printf("%d\n", *glob_var);
-// 				printf("Padre %d\n", x);
-//         munmap(glob_var, sizeof *glob_var);
-//     }
-//     return 0;
-// }
-// int main(void) {
-	// int pid = execl("/bin/ls", "/bin/ls", (char *)0);
-	// printf("Pid: %d\n", pid);
-// }
-
-
-
-// pid_t child_pid, wpid;
-// int status = 0;
-//
-// int n = 5;
-// for (int id=0; id < n; id++) {
-// 	if ((child_pid = fork()) == 0) {
-// 			printf("Hijo %d\n", child_pid);
-// 			exit(0);
-// 	}
-// }
-//
-// while ((wpid = wait(&status)) > 0);

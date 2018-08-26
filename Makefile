@@ -2,10 +2,10 @@
 
 all: main
 
-main:
-	cd parson
-	make
-	cd ..
+# main:
+# 	cd parson
+# 	make
+# 	cd ..
 	# gcc -Wall src/main.c -o bin/main -pthread
 
 parson.o: parson/parson.c
