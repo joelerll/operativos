@@ -2,9 +2,12 @@
 #include <ctype.h> // isspace
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <sys/time.h>
 #include <stdlib.h>
 #include <time.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #define ESPACIO 32
 #define SALTO_LINEA = 10
 #define TRUE 1
@@ -99,7 +102,41 @@ char **u_split(char *palabras, char letra) {
   return palabrasSplit;
 }
 
-void u_delete_number (int *numeros, int tamano, int numero) {
+void u_time_convert (double time) {
+	// 	auto n=seconds;
+	//
+	// sec = n % sec_per_min;
+	// n /= sec_per_min;
+	//
+	// min = n % min_per_hr;
+	// n /= min_per_hr;
+	//
+	// hr = n % hr_per_day;
+	// n /= hr_per_day;
+	//
+	// day = n;
+}
+
+void u_escribir_log (char *mensaje, char *nombreArchivo) {
+	int fp = open(nombreArchivo, O_WRONLY | O_APPEND | O_CREAT, 0777);
+	if(fp < 0) {
+    perror("Error opening file.");
+	} else {
+		write(fp, mensaje, strlen(mensaje));
+		write(fp, "\n", strlen("\n"));
+	}
+	close(fp);
+}
+
+void u_limpiar_log (char *nombreArchivo) {
+	FILE *fp = fopen(nombreArchivo,"w");
+	if(fp == NULL) {
+    perror("Error opening file.");
+	}
+	fclose(fp);
+}
+
+void u_delete_number (unsigned int *numeros, int tamano, int numero) {
 	int *numeroTmp = malloc(sizeof(int) * tamano);
 	int contadorReal = 0;
 	// copiar los elementos
@@ -119,4 +156,25 @@ void u_delete_number (int *numeros, int tamano, int numero) {
 		contadorReal++;
 	}
 	free(numeroTmp);
+}
+
+void u_print_current_folder () {
+	char cwd[500];
+	getcwd(cwd, sizeof(cwd));
+	printf("%s\n", cwd);
+}
+
+char *u_gen_fecha () {
+	char *fecha = malloc(sizeof(50));
+	const char *userFormato = "%d/%d/%dH%d:%d:%d";
+	time_t t = time(NULL);
+	struct tm tm = *localtime(&t);
+	int year = tm.tm_year + 1900;
+	int mon = tm.tm_mon + 1;
+	int day = tm.tm_mday;
+	int hora = tm.tm_hour;
+	int minuto = tm.tm_min;
+	int sec = tm.tm_sec;
+	snprintf (fecha, 50, userFormato, year, mon, day, hora, minuto, sec);
+	return fecha;
 }

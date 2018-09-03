@@ -24,116 +24,131 @@
 #include <pthread.h>
 #include <assert.h>
 
-#define MMAP_NAME         "/tmp/mmaptest"
-#define LENGTH            sizeof(struct mapped)
-#define ARRAY_ELEMENTS    10
+// #define MMAP_NAME         "/tmp/mmaptest"
+// #define LENGTH            sizeof(struct mapped)
+// #define ARRAY_ELEMENTS    10
 
-struct mapped
-{
-  unsigned char    array[ARRAY_ELEMENTS];
-  int              use_mutex;
-  pthread_mutex_t  mutex;
-};
-
-void die(char *msg)
-{
-  perror(msg);
-  exit(1);
+int main () {
+	char fecha[50];
+	const char *userFormato = "%d/%d/%dH%d:%d:%d";
+	time_t t = time(NULL);
+  struct tm tm = *localtime(&t);
+  int year = tm.tm_year + 1900;
+  int mon = tm.tm_mon + 1;
+  int day = tm.tm_mday;
+  int hora = tm.tm_hour;
+  int minuto = tm.tm_min;
+  int sec = tm.tm_sec;
+	snprintf (fecha, sizeof(fecha), userFormato, year, mon, day, hora, minuto, sec);
+	return 0;
 }
 
-void child(struct mapped *mapping)
-{
-  unsigned int n = 0;
-  while (1)
-  {
-    if (mapping->use_mutex)
-      pthread_mutex_lock(&mapping->mutex);
-    for (int i = 0; i < 10; i ++)
-    {
-      mapping->array[i] = n;
-    }
-    n ++;
-    if (mapping->use_mutex)
-      pthread_mutex_unlock(&mapping->mutex);
-  }
-}
-
-void parent(struct mapped *mapping)
-{
-  while (1)
-  {
-    if (mapping->use_mutex)
-      pthread_mutex_lock(&mapping->mutex);
-    for (int i = 0; i < 10; i ++)
-    {
-      printf("%4d", mapping->array[i]);
-    }
-    printf("\n");
-    if (mapping->use_mutex)
-      pthread_mutex_unlock(&mapping->mutex);
-    sleep(1);
-  }
-}
-
-int main(int argc, char **argv)
-{
-  int rc;
-  unlink(MMAP_NAME);
-  int fd = open(MMAP_NAME, O_CREAT|O_RDWR, 00600);
-  if (fd == -1)
-    die("open");
-  rc = ftruncate(fd, LENGTH);
-  if (rc != 0)
-    die("ftruncate");
-
-  struct mapped *mapping = (struct mapped *)mmap(NULL,
-                                                 LENGTH,
-                                                 PROT_READ|PROT_WRITE,
-                                                 MAP_SHARED,
-                                                 fd,
-                                                 0);
-
-  if (mapping == MAP_FAILED)
-    die("mmap");
-  close(fd);
-
-  pthread_mutexattr_t mutexattr;
-  rc = pthread_mutexattr_init(&mutexattr);
-  if (rc != 0)
-    die("pthread_mutexattr_init");
-  rc = pthread_mutexattr_setpshared(&mutexattr, PTHREAD_PROCESS_SHARED);
-  if (rc != 0)
-    die("pthread_mutexattr_setpshared");
-  pthread_mutex_init(&mapping->mutex, &mutexattr);
-  if (rc != 0)
-    die("pthread_mutex_init");
-
-  if (argc >= 2
-      && strcmp(argv[1], "--no-mutex") == 0)
-    mapping->use_mutex = 0;
-  else
-    mapping->use_mutex = 1;
-
-  switch (fork())
-  {
-    case -1:
-      die("fork");
-
-    case 0:
-      child(mapping);
-      break;
-
-    default:
-      parent(mapping);
-      break;
-  }
-
-  rc = munmap(mapping, LENGTH);
-  if (rc != 0)
-    die("munmap");
-
-  return 0;
-}
+// struct mapped
+// {
+//   unsigned char    array[ARRAY_ELEMENTS];
+//   int              use_mutex;
+//   pthread_mutex_t  mutex;
+// };
+//
+// void die(char *msg)
+// {
+//   perror(msg);
+//   exit(1);
+// }
+//
+// void child(struct mapped *mapping)
+// {
+//   unsigned int n = 0;
+//   while (1)
+//   {
+//     if (mapping->use_mutex)
+//       pthread_mutex_lock(&mapping->mutex);
+//     for (int i = 0; i < 10; i ++)
+//     {
+//       mapping->array[i] = n;
+//     }
+//     n ++;
+//     if (mapping->use_mutex)
+//       pthread_mutex_unlock(&mapping->mutex);
+//   }
+// }
+//
+// void parent(struct mapped *mapping)
+// {
+//   while (1)
+//   {
+//     if (mapping->use_mutex)
+//       pthread_mutex_lock(&mapping->mutex);
+//     for (int i = 0; i < 10; i ++)
+//     {
+//       printf("%4d", mapping->array[i]);
+//     }
+//     printf("\n");
+//     if (mapping->use_mutex)
+//       pthread_mutex_unlock(&mapping->mutex);
+//     sleep(1);
+//   }
+// }
+//
+// int main(int argc, char **argv)
+// {
+//   int rc;
+//   unlink(MMAP_NAME);
+//   int fd = open(MMAP_NAME, O_CREAT|O_RDWR, 00600);
+//   if (fd == -1)
+//     die("open");
+//   rc = ftruncate(fd, LENGTH);
+//   if (rc != 0)
+//     die("ftruncate");
+//
+//   struct mapped *mapping = (struct mapped *)mmap(NULL,
+//                                                  LENGTH,
+//                                                  PROT_READ|PROT_WRITE,
+//                                                  MAP_SHARED,
+//                                                  fd,
+//                                                  0);
+//
+//   if (mapping == MAP_FAILED)
+//     die("mmap");
+//   close(fd);
+//
+//   pthread_mutexattr_t mutexattr;
+//   rc = pthread_mutexattr_init(&mutexattr);
+//   if (rc != 0)
+//     die("pthread_mutexattr_init");
+//   rc = pthread_mutexattr_setpshared(&mutexattr, PTHREAD_PROCESS_SHARED);
+//   if (rc != 0)
+//     die("pthread_mutexattr_setpshared");
+//   pthread_mutex_init(&mapping->mutex, &mutexattr);
+//   if (rc != 0)
+//     die("pthread_mutex_init");
+//
+//   if (argc >= 2
+//       && strcmp(argv[1], "--no-mutex") == 0)
+//     mapping->use_mutex = 0;
+//   else
+//     mapping->use_mutex = 1;
+//
+//   switch (fork())
+//   {
+//     case -1:
+//       die("fork");
+//
+//     case 0:
+//       child(mapping);
+//       break;
+//
+//     default:
+//       parent(mapping);
+//       break;
+//   }
+//
+//   rc = munmap(mapping, LENGTH);
+//   if (rc != 0)
+//     die("munmap");
+//
+//   return 0;
+// }
 
 // static int *glob_var = 0;
 // int x = 0;

@@ -19,8 +19,12 @@ make
 3. Enviar un archivo
 
 ```sh
-./bin/cliente test/dump/hello.c
+./clients/client
 ```
+
+4. Archivo log
+
+El archivos de guardara en el archivo __log__
 
 
 ## Dependencias
@@ -38,27 +42,41 @@ make
 [x] probrar libreria de json
 [x] obtener la carga de los cpus y mostralos en consola
 [x] cambiado a procesos
-[ ] pruebas con shared memory o memory map (cual es mejor?)
-[ ] recoger variables en un array de procesos hijos
-[ ] cambiar popen por exec()
-[ ] obtener datos de todos los procesos del programa (
-  uso memoria, cat /proc/2311/task/10935/statm
-  disco,
-  cpu, tasas de proceso en ejecucion x tiempo),
-  obtener porcentajes de cpu
-  guardar media, mediana, promedio (estaditicas basicas)
-[ ] generar reportes por medio de senales (Ej: mandar por senal que cada 5 segundos me genere reporte)
-[ ] Detectar la ocurrencia de major/minor page faults en el sistema de todo?
-[ ] guardarlo en un .log
-[ ] detectar procesos que superen un tiempo te
+[x] pruebas con shared memory o memory map (cual es mejor?)
+[x] recoger variables en un array de procesos hijos e ir eliminando los terminados
+  ademas agregar los procesos del exec (OJO)
+[x] colocar un print con los procesos que se agregan (colocar un sleep de 1 segundo para cada procesos para ver como se eliminan)
+[ ] reducir a un solo exec
+  captar el stdout y stderr con los pipe
+[x] cambiar popen por exec()
+[x] obtener datos de todos los procesos del programa (
+  [x] uso memoria, cat /proc/[pid]/statm
+  [x] disco, /proc/[pid]/io
+  [x] cpu, /proc/[pid]/stat obtener porcentajes de cpu por proceso?
+  [x] Detectar la ocurrencia de major/minor page faults en el programa
+  [x] guardar en un archivo log
+[x] detectar procesos que superen un tiempo te
+[x] guardar media, mediana, promedio (estaditicas basicas)
+  * media
+  * promedio de uso memoria
+  * tasas de proceso en ejecucion x tiempo dado?
+  [x] guardar en un archivo log
+[x] Guardar datos en una tabla compartida userId, fecha, respuesta, rutaEjecutableFuente, rutaCodigoFuente, ordenLlegada
+[ ] crear reporte
+
+=========================================
+[ ] mostrar los datos de tabla compartida
+[ ] arreglar problema de fclose archivos porque si envio dos veces los archivos me bota ERROR
+[ ] salen siempre al 0.0% los procesos
+[ ] documento detallados con imagenes de como debe hacer las pruebas y que esta implementado
+[ ] arreglar el cliente en python para que pueda enviar archivos
 [ ] seleccionar, pausar, continuar y terminar procesos. Usar senales
-[ ] como hacer las pruebas de cada cosa?, como ingresaria esto?
-[ ] crear estructura para guardar datos y mostrarla?
-[ ] Guardar datos en una tabla compartida userId, fecha, respuesta, rutaEjecutableFuente, rutaCodigoFuente, ordenLlegada
-[ ] enviar archivos y recibir respuesta por socket streming
+[ ] generar reportes por medio de senales (Ej: mandar por senal que cada 5 segundos me genere reporte) o que genere el txt por medio senales
 
 
 -- Extras
+[ ] como hacer las pruebas de cada cosa?, como ingresaria esto?
+[ ] enviar archivos y recibir respuesta por socket streming
 [ ] servidor raw en python
 [ ] diseno de pagina web para enviar codigo y recibir la respuestas (material design)
 # FIX:
@@ -144,10 +162,36 @@ El proyecto se va a basar sobre el proyecto desarrollado en el primer parcial. A
 
 Monitorear continuamente la carga de los CPU(s) y al crear procesos asignarlos (affinidad) a los CPUs menos ocupados [x]
 
-Detectar procesos que superen el tiempo de ejecucion Te
+Detectar procesos que superen el tiempo de ejecucion Te [x]
 
-Detectar la ocurrencia de major/minor page faults en el sistema y proveer estadisticas acerca de los procesos involucrados
+Detectar la ocurrencia de major/minor page faults en el sistema [x]
+proveer estadisticas acerca de los procesos involucrados
 
-Generar estadisticas de uso de memoria,disco y cpu de los procesos en ejecucion y de el sistema, y las tazas de procesos en ejecucion y terminados por minuto. Estos datos deben de registrarse en un archivo de log.
+Generar estadisticas de uso de memoria,disco y cpu de los procesos en ejecucion, y las
+tazas de procesos en ejecucion y terminados por minuto.
+Estos datos deben de registrarse en un archivo de log.
 
 Permitir seleccionar procesos a pausar o terminar afin de que el adminsitrador pueda mejorar el tiempo de respuesta del sistema.
+
+<!--
+// limpiar los procesos terminados
+// pthread_mutex_lock(&mapping->mutex);
+// 	pid_t pmaster = getpid();
+// 	u_delete_number(mapping->array, mapping->cantidad, pmaster);
+// 	mapping->cantidad--;
+// pthread_mutex_unlock(&mapping->mutex);
+// limpiar los procesos terminados -->
+
+<!-- // char * line = NULL;
+// size_t len = 0;
+// char **datos = malloc(sizeof(char *) * 8);
+// for (size_t i = 0; i < 8; i++) {
+// 	ssize_t read = getline(&line, &len, fp);
+// 	if (read != -1) {
+// 		char **s = u_split(line, ' ');
+// 		char *palabraTmpNew = malloc(sizeof(char *));
+// 		strcpy(palabraTmpNew, s[1]);
+// 		datos[i] = palabraTmpNew;
+// 	}
+// }
+// io = proc_io_crear(datos[0], datos[1], datos[2], datos[3], datos[4], datos[5], datos[6]); -->

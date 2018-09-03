@@ -1,6 +1,6 @@
 .PHONY: clean
 
-all: main
+all: server
 
 # main:
 # 	cd parson
@@ -20,12 +20,11 @@ utils.o: src/utils.c
 proc.o: src/proc.c
 	@gcc -c -Wall -Iinclude/ src/proc.c -o obj/proc.o
 
-server: src/socket.server.c obj/tabla.o
-	gcc -Wall -Iinclude/ -pthread src/socket.server.c obj/tabla.o -o bin/server
-	./bin/server
+server: src/socket.server.c proc.o utils.o tabla.o
+	@gcc -Wall -Iinclude/ -pthread obj/utils.o obj/proc.o obj/tabla.o src/socket.server.c -o bin/server
 
-server.t: src/socket.server.c proc.o utils.o
-	@gcc -Wall -Iinclude/ -pthread obj/utils.o obj/proc.o src/socket.server.c -o bin/server
+server.t: src/socket.server.c proc.o utils.o tabla.o
+	@gcc -Wall -Iinclude/ -pthread obj/utils.o obj/proc.o obj/tabla.o src/socket.server.c -o bin/server
 	@./bin/server
 
 client: src/socket.client.c

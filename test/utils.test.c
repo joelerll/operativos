@@ -28,8 +28,13 @@ int main() {
 
 	int numeros[10] = {10, 15, 50, 25, 23, 36};
 	u_delete_number(numeros, 10, 23);
-	for (size_t i = 0; i < 10; i++) {
-		printf("%d\n", numeros[i]);
-	}
+	// for (size_t i = 0; i < 10; i++) {
+	// 	printf("%d\n", numeros[i]);
+	// }
+	u_escribir_log ("Hola", "log");
+
+
+	char *fecha = u_gen_fecha();
+	printf("%s\n", fecha);
 	return 0;
 }
