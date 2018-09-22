@@ -1,146 +1,106 @@
-proceso pid:26709, cpu:0.0000%, memoria: 3874 discoEscrito: 0, discoRead: 0 majorPageFaults: 56, minorPagesFautls: 0
+proceso pid:9099, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26709, cpu:0.0000%, memoria: 3874 discoEscrito: 0, discoRead: 0 majorPageFaults: 56, minorPagesFautls: 0
+proceso pid:9105, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26722, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9115, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 52, minorPagesFautls: 0
 
-proceso pid:26709, cpu:0.0000%, memoria: 3874 discoEscrito: 0, discoRead: 0 majorPageFaults: 56, minorPagesFautls: 0
+proceso pid:9125, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26722, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9131, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26736, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 53, minorPagesFautls: 0
+proceso pid:9125, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26709, cpu:0.0000%, memoria: 3874 discoEscrito: 0, discoRead: 0 majorPageFaults: 56, minorPagesFautls: 0
+proceso pid:9131, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26722, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9125, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26736, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9131, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26709, cpu:0.0000%, memoria: 3874 discoEscrito: 0, discoRead: 0 majorPageFaults: 56, minorPagesFautls: 0
+proceso pid:9125, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26722, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9131, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26736, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9163, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26750, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9171, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26722, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+El proceso 9125 ha superado el tiempo TE 1
+proceso pid:9125, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 63, minorPagesFautls: 0
 
-proceso pid:26736, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9131, cpu:60.9756%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26750, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9163, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26776, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9171, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26736, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9175, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 52, minorPagesFautls: 0
 
-proceso pid:26750, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9163, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26776, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9171, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26788, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9163, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26750, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9171, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26776, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+El proceso 9163 ha superado el tiempo TE 1
+proceso pid:9163, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 63, minorPagesFautls: 0
 
-proceso pid:26788, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9171, cpu:71.9424%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 84, minorPagesFautls: 0
 
-proceso pid:26802, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9201, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26776, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9207, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26788, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9201, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26802, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9207, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26814, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 53, minorPagesFautls: 0
+proceso pid:9211, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26776, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9217, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26788, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9211, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26802, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9217, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26814, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9223, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26788, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9229, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 85, minorPagesFautls: 0
 
-proceso pid:26802, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9211, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26814, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9217, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26825, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9223, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26802, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9229, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 85, minorPagesFautls: 0
 
-proceso pid:26814, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9235, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 52, minorPagesFautls: 0
 
-proceso pid:26825, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9211, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26840, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9217, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26814, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9235, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26825, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9241, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26840, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+El proceso 9211 ha superado el tiempo TE 1
+proceso pid:9211, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 63, minorPagesFautls: 0
 
-proceso pid:26856, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9217, cpu:60.6061%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26825, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9235, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26840, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9241, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26856, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9235, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 58, minorPagesFautls: 0
 
-proceso pid:26870, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 53, minorPagesFautls: 0
+proceso pid:9241, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 
-proceso pid:26825, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+El proceso 9235 ha superado el tiempo TE 1
+proceso pid:9235, cpu:0.0000%, memoria: 20257 discoEscrito: 0, discoRead: 0 majorPageFaults: 63, minorPagesFautls: 0
 
-proceso pid:26840, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26856, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26870, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26882, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 53, minorPagesFautls: 0
-
-proceso pid:26840, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26856, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26870, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26882, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26856, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26870, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26882, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26903, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26870, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26882, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26903, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26915, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26882, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26903, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26915, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26903, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26915, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26915, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
-
-proceso pid:26915, cpu:0.0000%, memoria: 20258 discoEscrito: 0, discoRead: 0 majorPageFaults: 59, minorPagesFautls: 0
+proceso pid:9241, cpu:0.0000%, memoria: 1055 discoEscrito: 0, discoRead: 0 majorPageFaults: 83, minorPagesFautls: 0
 

@@ -19,10 +19,10 @@
 #include "utils.h"
 #include "tabla.h"
 
-#define TE 3
+#define TE 1
 #define NOMBRE_LOG "log"
 #define LENGTH            sizeof(struct procesos)
-#define ARRAY_ELEMENTS    500
+#define ARRAY_ELEMENTS    1000
 
 #define ANSI_COLOR_RED     "\x1b[31m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
@@ -176,7 +176,6 @@ void *monitor (void *arg) {
 	params *param  = (params*)arg;
 	procesos *procesosIds  = param->proceso;
 	hiloMonitor = syscall(SYS_gettid);
-	printf("aaaa%s\n");
 	while (1) {
 		// printf("%d\n", tablas->cantidad);
 		// pthread_mutex_lock(&tablas->mutex);
@@ -185,8 +184,8 @@ void *monitor (void *arg) {
 
 		pthread_mutex_lock(&procesosIds->mutex);
 			proc_guardar_estaticticas_procesos (procesosIds->array, procesosIds->cantidad, NOMBRE_LOG);
+			// proc_imprimir_porcentajesCPUs(NULL);
 		pthread_mutex_unlock(&procesosIds->mutex);
-		proc_imprimir_porcentajesCPUs(NULL);
 		usleep(250000);
 	}
 	return NULL;
@@ -246,16 +245,10 @@ void procesar (int sock, procesos *mapping, Tablas *tablas) {
 		CPU_ZERO(&my_set);
 		CPU_SET(procesador, &my_set);
 		sched_setaffinity(0, sizeof(cpu_set_t), &my_set);
-		// redirigirlo
 		dup2(link[1], STDERR_FILENO);
 		close(link[0]);
 		close(link[1]);
 	  snprintf(rutaCompilado, sizeof(rutaCompilado), salida, userId);
-		// pthread_mutex_lock(&mapping->mutex);
-		// pid_t pmaster = getpid();
-		// mapping->array[mapping->cantidad] = pmaster;
-		// mapping->cantidad++;
-		// pthread_mutex_unlock(&mapping->mutex);
 		execl("/usr/bin/gcc", "/usr/bin/gcc", nombreArchivo, "-o", rutaCompilado, (char *)0);
 	} else {
 		close(link[1]);
@@ -270,12 +263,6 @@ void procesar (int sock, procesos *mapping, Tablas *tablas) {
 			if (pipe(link) == -1) { error("Error al crear pipe: "); }
 			if ((pid2 = fork()) == -1) { error("Error al crear proceso "); }
 			if (pid2 == 0) {
-				// pthread_mutex_lock(&mapping->mutex);
-				// 	pid_t pmaster = getpid();
-				// 	mapping->array[mapping->cantidad] = pmaster;
-				// 	mapping->cantidad++;
-				// pthread_mutex_unlock(&mapping->mutex);
-				// redirigirlo
 				int procesador = proc_obtenerProcesosMenosUsado(NULL);
 			  cpu_set_t my_set;
 			  CPU_ZERO(&my_set);
@@ -285,13 +272,11 @@ void procesar (int sock, procesos *mapping, Tablas *tablas) {
 				memset(rutaEjecutar, 0, sizeof(rutaEjecutar));
 				snprintf(rutaEjecutar, sizeof(rutaEjecutar), ejecutar, userId);
 				// anadir a tabla
-				// pthread_mutex_lock(&tablas->mutex);
-				// 	tablaDatos *a = tabla_buscarPorUserId(userId, tablas);
-				// 	if (a != NULL) {
-				// 		tabla_actualizar_ruta(a, rutaEjecutar);
-				// 	}
-				// pthread_mutex_unlock(&tablas->mutex);
-				// anadir a tabla
+				pthread_mutex_lock(&mapping->mutex);
+		      pid_t pmaster = getpid();
+		      mapping->array[mapping->cantidad] = pmaster;
+					mapping->cantidad++;
+				pthread_mutex_unlock(&mapping->mutex);
 				dup2(link[1], STDOUT_FILENO);
 				close(link[0]);
 				close(link[1]);
@@ -300,15 +285,6 @@ void procesar (int sock, procesos *mapping, Tablas *tablas) {
 				close(link[1]);
 				read(link[0], respuesta, sizeof(respuesta));
 				snprintf(enviarDatos, sizeof(enviarDatos), enviar, "true", "todo en orden", respuesta);
-				// anadir a tabla
-				// pthread_mutex_lock(&tablas->mutex);
-					// tablaDatos *a = tabla_buscarPorUserId(userId, tablas);
-					// if (a != NULL) {
-					// 	 tabla_actualizar_respuesta(a, respuesta);
-					// }
-					// tabla_imprimir(tablas);
-				// pthread_mutex_unlock(&tablas->mutex);
-				// anadir a tabla
 				write(sock, enviarDatos, sizeof(enviarDatos));
 				wait(NULL);
 				close(sock);

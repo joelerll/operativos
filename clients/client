@@ -10,7 +10,7 @@ def enviarArchivo(i):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serversocket.connect(('localhost', 5000))
     opciones = [';']
-    opcionesRam = [400] # // 200, 300, 600, 800
+    opcionesRam = [200, 300, 600, 800] # // 200, 300, 600, 800
     mensaje = """
 	#include <stdio.h>
     #include <unistd.h>
@@ -22,7 +22,7 @@ def enviarArchivo(i):
           }
         }
       }
-      sleep(1);
+      // sleep(1);
 	  printf("Hola");
 	  printf("Como estan %s")%s
 	  return 0;

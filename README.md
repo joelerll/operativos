@@ -195,3 +195,20 @@ Permitir seleccionar procesos a pausar o terminar afin de que el adminsitrador p
 // 	}
 // }
 // io = proc_io_crear(datos[0], datos[1], datos[2], datos[3], datos[4], datos[5], datos[6]); -->
+
+
+
+	<!-- // Estadisticas unitarias
+	// Formato 1
+	// guardar los datos del proceso, llamar a las functiones que hice de
+	// uso memoria
+	// disco
+  // cpu
+	// major/minor page faults por proceso
+	// proceso pid name %cpu memoria disco majorPage minorPages
+
+	// Estadisticas generales
+	// Formato 2
+	// cantidad procesos corriendo
+	// guardar cada tiempo dado las estaditicas generales del programa
+	// -->

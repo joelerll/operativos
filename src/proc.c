@@ -131,24 +131,24 @@ int proc_obtenerProcesosMenosUsado (char *archivo) {
 }
 
 void proc_imprimir_porcentajesCPUs (char *archivo) {
-	printf("AAA\n");
-	// int contador = 1;
-	// ProcFile **listaProcesadores = proc_listaProcesos(archivo, 1e+6); // 500000 1e+6
-	// ProcFile *cpu;
-	// do {
-	// 	cpu = listaProcesadores[contador];
-	// 	if (cpu != NULL) {
-	// 		printf("%s %.2f%%\n", cpu->nombre, cpu->porcentajeUso);
-	// 	}
-	// 	contador++;
-	// } while (cpu != NULL);
-	// // sleep(1);
-	// // limpiar el stdout
-	// // for (size_t i = 0; i < CPUs; i++) {
-	// // 	fputs("\033[A\033[2K",stdout);
-	// // 	rewind(stdout);
-	// // }
-	// free(listaProcesadores);
+	int contador = 1;
+	ProcFile **listaProcesadores = proc_listaProcesos(archivo, 1e+6); // 500000 1e+6
+	ProcFile *cpu;
+	do {
+		cpu = listaProcesadores[contador];
+		if (cpu != NULL) {
+			printf("%s %.2f%%\n", cpu->nombre, cpu->porcentajeUso);
+		}
+		contador++;
+	} while (cpu != NULL);
+	printf("\n");
+	// sleep(1);
+	// limpiar el stdout
+	// for (size_t i = 0; i < CPUs; i++) {
+	// 	fputs("\033[A\033[2K",stdout);
+	// 	rewind(stdout);
+	// }
+	free(listaProcesadores);
 }
 
 Uptime *proc_uptime (char *archivo) {
@@ -378,138 +378,7 @@ void proc_guardar_estaticticas_procesos (unsigned int pids[], int cantidad, char
 		free(io);
 		free(proc);
 	}
-	// u_escribir_log(mensaje, nombreArchivo);
-
-	// Estadisticas unitarias
-	// Formato 1
-	// guardar los datos del proceso, llamar a las functiones que hice de
-	// uso memoria
-	// disco
-  // cpu
-	// major/minor page faults por proceso
-	// proceso pid name %cpu memoria disco majorPage minorPages
-
-	// Estadisticas generales
-	// Formato 2
-	// cantidad procesos corriendo
-	// guardar cada tiempo dado las estaditicas generales del programa
-	//
 }
-
-// To calculate CPU usage for a specific process you'll need the following:
-//
-// /proc/uptime
-// #1 uptime of the system (seconds)
-// /proc/[PID]/stat
-// #14 utime - CPU time spent in user code, measured in clock ticks
-// #15 stime - CPU time spent in kernel code, measured in clock ticks
-// #16 cutime - Waited-for children's CPU time spent in user code (in clock ticks)
-// #17 cstime - Waited-for children's CPU time spent in kernel code (in clock ticks)
-// #22 starttime - Time when the process started, measured in clock ticks
-// Hertz (number of clock ticks per second) of your system.
-// In most cases, getconf CLK_TCK can be used to return the number of clock ticks.
-// The sysconf(_SC_CLK_TCK) C function call may also be used to return the hertz value.
-
-
-// * uso memoria del cpu cat /proc/2311/statm * uso memoria de un proceso
-// 715888 144996 39581 52 0 437733 0
-// // /proc/<pid>/statm
-// //
-// // /proc/<pid>/statm fields: columns are (in pages):
-// // total program size|
-// // resident set size|
-// // shared pages|
-// // text (code) |
-// // data/stack |
-// // library |
-// // dirty pages |
-// //
-// // Here an example: 693 406 586 158 0 535 0
-// // en Kb
-//
-//
-// * disco cat /proc/2311/io
-// rchar: 0
-// wchar: 0
-// syscr: 0
-// syscw: 0
-// read_bytes: 106496
-// write_bytes: 0
-// cancelled_write_bytes: 0
-//
-// // rchar: number of bytes the process read, using any read-like system call (from files, pipes, tty...).
-// //
-// // wchar: number of bytes the process wrote using any write-like system call.
-// //
-// // syscr: number of read-like system call invocations that the process performed.
-// //
-// // syscr: number of write-like system call invocations that the process performed.
-// //
-// // read_bytes: number of bytes the process directly read from disk. write_bytes: number of bytes the process originally dirtied in the page-cache (assuming they will go to disk later). cancelled_write_bytes: number of bytes the process "un-dirtied" - e.g. using an "ftruncate" call that truncated pages from the page-cache.
-//
-//
-// * cpu cat /proc/2311/stat
-// 10935 (FS Broker 10918) S 2310 2309 2309 0 -1 4194624 104 191674 0 31 52 144 651 137 20 0 81 0 50564 2764587008 142913 18446744073709551615 4194304 4406196 140721785014208 139924852149232 139925611411789 0 0 4096 17663 1 0 0 -1 4 0 0 27 0 0 6503376 6505552 14000128 140721785016687 140721785016742 140721785016742 140721785020361 0
-//
-// * contar cantidad de procesos usados y terminados por minutos
-
-//
-// Table 1-3: Contents of the stat files (as of 2.6.22-rc3)
-// ..............................................................................
-//  Field          Content
-//   pid           process id
-//   tcomm         filename of the executable
-//   state         state (R is running, S is sleeping, D is sleeping in an
-//                 uninterruptible wait, Z is zombie, T is traced or stopped)
-//   ppid          process id of the parent process
-//   pgrp          pgrp of the process
-//   sid           session id
-//   tty_nr        tty the process uses
-//   tty_pgrp      pgrp of the tty
-//   flags         task flags
-//   min_flt       number of minor faults
-//   cmin_flt      number of minor faults with child's
-//   maj_flt       number of major faults
-//   cmaj_flt      number of major faults with child's
-//   utime         user mode jiffies
-//   stime         kernel mode jiffies
-//   cutime        user mode jiffies with child's
-//   cstime        kernel mode jiffies with child's
-//
-//
-// You need to parse out the data from /proc/<PID>/stat. These are the first few fields (from Documentation/filesystems/proc.txt in your kernel source):
-
-// Table 1-3: Contents of the stat files (as of 2.6.22-rc3)
-// ..............................................................................
-//  Field          Content
-//   pid           process id
-//   tcomm         filename of the executable
-//   state         state (R is running, S is sleeping, D is sleeping in an
-//                 uninterruptible wait, Z is zombie, T is traced or stopped)
-//   ppid          process id of the parent process
-//   pgrp          pgrp of the process
-//   sid           session id
-//   tty_nr        tty the process uses
-//   tty_pgrp      pgrp of the tty
-//   flags         task flags
-//   min_flt       number of minor faults
-//   cmin_flt      number of minor faults with child's
-//   maj_flt       number of major faults
-//   cmaj_flt      number of major faults with child's
-//   utime         user mode jiffies
-//   stime         kernel mode jiffies
-//   cutime        user mode jiffies with child's
-//   cstime        kernel mode jiffies with child's
-// You're probably after utime and/or stime. You'll also need to read the cpu line from /proc/stat, which looks like:
-//
-// cpu  192369 7119 480152 122044337 14142 9937 26747 0 0
-// This tells you the cumulative CPU time that's been used in various categories, in units of jiffies. You need to take the sum of the values on this line to get a time_total measure.
-//
-// Read both utime and stime for the process you're interested in, and read time_total from /proc/stat. Then sleep for a second or so, and read them all again. You can now calculate the CPU usage of the process over the sampling time, with:
-//
-// user_util = 100 * (utime_after - utime_before) / (time_total_after - time_total_before);
-// sys_util = 100 * (stime_after - stime_before) / (time_total_after - time_total_before);
-
 // https://linux.die.net/man/2/getrusage
 // https://www.redhat.com/archives/axp-list/2001-January/msg00355.html
 // https://stackoverflow.com/questions/16726779/how-do-i-get-the-total-cpu-usage-of-an-application-from-proc-pid-stat
